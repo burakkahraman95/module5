@@ -1,0 +1,7 @@
+Module 6 - Additional Feature: Category Filter
+
+I added a Category Filter feature to the ShopFake ecommerce product page. Users can click category buttons (All, Electronics, Accessories, Footwear, Kitchen, Sports) to filter the displayed products. The active button is highlighted, and products outside the selected category are hidden instantly.
+
+The feature was built using JavaScript on the frontend with no changes to the Flask backend. Category buttons are generated dynamically via Jinja2 templating, so new categories are automatically added as filter options when new products are introduced.
+
+This improves the shopping experience by helping users quickly find products in a specific category.
