@@ -46,10 +46,35 @@
 
         .section-title {
             font-size: 22px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             color: #203a43;
             border-left: 5px solid #32d9ef;
             padding-left: 12px;
+        }
+
+        /* Category Filter */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #203a43;
+            color: #203a43;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #203a43;
+            color: white;
         }
 
         .product-grid {
@@ -66,6 +91,11 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .product-card.hidden {
+            display: none;
         }
 
         .product-category {
@@ -119,9 +149,22 @@
 
     <div class="container">
         <h2 class="section-title">Our Products</h2>
+
+        <!-- Category Filter Bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterCategory('All', this)">All</button>
+            {% set categories = [] %}
+            {% for product in products %}
+                {% if product.category not in categories %}
+                    {% set _ = categories.append(product.category) %}
+                    <button class="filter-btn" onclick="filterCategory('{{ product.category }}', this)">{{ product.category }}</button>
+                {% endif %}
+            {% endfor %}
+        </div>
+
         <div class="product-grid">
             {% for product in products %}
-            <div class="product-card">
+            <div class="product-card" data-category="{{ product.category }}">
                 <span class="product-category">{{ product.category }}</span>
                 <div class="product-name">{{ product.name }}</div>
                 <div class="product-description">{{ product.description }}</div>
@@ -135,6 +178,23 @@
     </div>
 
     <footer>&copy; 2026 ShopFake Inc. &mdash; All rights reserved.</footer>
+
+    <script>
+        function filterCategory(category, btn) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Show/hide product cards
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (category === 'All' || card.dataset.category === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
